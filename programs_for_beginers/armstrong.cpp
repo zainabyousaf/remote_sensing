@@ -14,6 +14,8 @@ ds=fd*fd*fd+sd*sd*sd+td*td*td;
 if(ds==Armstrong_no){
     cout<<ds<<" is Armstrong no.";
 }
+//this line prints prompts
+//modified
 else cout << "this is not Armstrong no. because sum of cubes of each digit is not equal to the original no";
 }
 
