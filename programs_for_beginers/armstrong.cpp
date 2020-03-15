@@ -1,17 +1,21 @@
 #include <iostream>
+
 using namespace std;
 
-int main(){
-int Armstrong_no;
+int main()
+{
+int Armstrong_no, fd, ds, sd, td, t;
 cout<<"enter a no.";
 cin>>Armstrong_no;
-int commulative_sum =0, n=Armstrong_no;
-while(n !=0){
-	int digit = n %10;
-    commulative_sum = commulative_sum + digit*digit*digit;
-    n=n/10;
+td = Armstrong_no%10;
+sd = ((Armstrong_no/10)%10);
+fd = Armstrong_no/100;
+ds=fd*fd*fd+sd*sd*sd+td*td*td;
+if(ds==Armstrong_no){
+    cout<<ds<<" is Armstrong no.";
+}
+//this line prints prompts
+//modified
+else cout << "this is not Armstrong no. because sum of cubes of each digit is not equal to the original no";
 }
 
-if(commulative_sum == Armstrong_no) cout << "is Armstrong no." << endl;
-else cout << "not armstrong number" << endl;
-}
