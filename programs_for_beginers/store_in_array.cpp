@@ -8,7 +8,7 @@ int main()
 int Sno, i=0, no;
 cout<<"enter a no: ";
 cin>>no;
-int A[10];int j;
+int A[50], j;
 while(no!=9999){
 A[i]=no;
 cout<<"enter a no: ";
@@ -23,5 +23,5 @@ if(Sno==A[j]){
     cout<<j; found=true;break;}
 }
 if(found==false) cout << "not found !\n";
-cout << "the element at " << j << "is " << A[j] << endl;
+cout << "the element at " << j << " is " << A[j] << endl;
 }
