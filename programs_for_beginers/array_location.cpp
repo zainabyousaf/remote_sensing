@@ -5,10 +5,19 @@ using namespace std;
 
 int main()
 {
-int A[]={8,4,5,7,-4,9,8,-1,-7,-3};
-for(int i=0; i<10; i++){
-if(A[i]==8) cout<<i<<endl;
-}
-//for(int j=0; j<10; j++)
-cout<<A[8];
+  int A[50],size,search;
+  bool found =false;
+  cout << "enter size of an array: ";
+  cin >> size;
+  for(int i=0; i< size; i++){
+   cin >>A[i]; 
+  }
+  cout << "enter to search: ";
+  cin >> search;
+  for(int i=0; i< size; i++){
+   if(A[i] == search) {cout << i; found=true; break;}
+    
+  }
+  if(! found) cout << "nill";
+  
 }
