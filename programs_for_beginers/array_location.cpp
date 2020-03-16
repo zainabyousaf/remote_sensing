@@ -1,3 +1,4 @@
+/* write a program to find the location of a given number in array*/
 #include <iostream>
 
 using namespace std;
