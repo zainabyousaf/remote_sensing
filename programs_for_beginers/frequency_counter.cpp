@@ -31,7 +31,6 @@ int main(){
     else{
       // add element to found
       found_array[thresh_index++] = array[i];
-      cout << thresh_index;
     }
   if(counter > thresh) cout << array[i] << " ";
   }
