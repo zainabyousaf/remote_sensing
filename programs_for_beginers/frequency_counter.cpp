@@ -40,4 +40,6 @@ int main(){
   delete []array; //deleting dynamically allocated memory
   delete []searched;
   searched=0;
+// just added some comments
+	
 }
