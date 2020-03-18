@@ -24,14 +24,13 @@ int main(){
     }
     if(!found){
     for(int j=i+1; j < size; j++){
-      
+
       if(array[i] == array[j]) counter++;
     }
     }
     else{
       // add element to found
       found_array[thresh_index++] = array[i];
-      cout << thresh_index;
     }
   if(counter > thresh) cout << array[i] << " ";
   }
