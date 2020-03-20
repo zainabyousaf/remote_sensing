@@ -1,0 +1,4 @@
+this is first line
+line added by master
+line added by temp
+another line added by temp
