@@ -1,6 +1,7 @@
 #include <iostream>
 int nDivisors(int x, int s, int e){
     // it is on master branch
+    // this line is being added by master
     // how many divisors of x over domain [s,e]
     int n=0;
     for(int i=s; i<=e; i++){
