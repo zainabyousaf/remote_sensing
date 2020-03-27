@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 // this is by master
+// again by master
 int main(){
 int Armstrong_no;
 cout<<"enter a no.";
