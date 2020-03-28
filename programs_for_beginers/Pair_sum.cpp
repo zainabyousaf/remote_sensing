@@ -1,5 +1,5 @@
 //If the no you entered to search from the "sum of two pairs" is present then give\
-the numbers and their location.
+the numbers and their locations.
 
 #include <iostream>
 
