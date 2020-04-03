@@ -1,4 +1,4 @@
-//A no 'n' is Armstrong_no if sum of it's all digit is equal to 'n'.
+//A no 'n' is Armstrong_no if sum of it's all digit is equal to 'n'...
 #include <iostream>
 using namespace std;
 int main(){
