@@ -4,7 +4,6 @@ void make_set(int [], int, int * &,int &);
 // duplicates, size, set, set_size
 void fill_array(int *&,int );
 // array, size
-
 class Set{
 private:
     int size,*set; // first small letter
@@ -17,9 +16,30 @@ public:
         // size and set has been modified as passed by reference
     }
 
+    Set(const Set &obj){
+        this->size = obj.size;
+        this->set = new int [this->size];
+        for(int i=0; i< size; i++) this->set[i] = obj.set[i];
+        // no need to check duplicates as set always contains unique
+    }
+
+    Set &operator = (const Set &rhs){
+        if(this != &rhs){ //testing self-assignment
+            delete []this->set; // delete previous if any
+
+            this->size = rhs.size;
+            this->set = new int [this->size];
+            for(int i=0; i< size; i++) this->set[i] = rhs.set[i];
+
+            return *this;
+        }
+    }
+
+
+
     void fill_set(){
         delete []this->set; // delete previously set memory if any;
-        cout << "enter size: ";
+        cout << "enter size of set: ";
         cin >> this->size;
         int *temp = new int [this->size];
         fill_array(temp,size);
@@ -46,6 +66,10 @@ int main(){
     B.fill_set();
     cout << A;
     cout << B;
+    Set C(B);
+    cout << C;
+    A=A;
+    cout << A;
     return 0;
 }
 // =================================== end of main
