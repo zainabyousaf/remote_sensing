@@ -54,6 +54,35 @@ public:
         return s3;
 
     }
+    //------------------------- s3 += s2
+    // left hand side is not constant
+    Set &operator +=(const Set &obj){
+        int *set_ptr;
+        int set_size;
+        Union(this->set,obj.set,this->size,obj.size,set_ptr,set_size);
+        // now delete this->set because it has been copied
+        delete []this->set;
+        this->set = set_ptr;
+        this->size=set_size;
+
+        return *this;
+
+    }
+    //------------------ s3 = s2 +4
+    Set &operator +(int val){
+        int *set_ptr;
+        int set_size;
+        this->size=this->size+1;
+        set_ptr = new int [this->size];
+        set_ptr[0]=val;
+        for(int i=0; i< this->size; i++) set_ptr[i+1] = this->set[i];
+
+        delete this->set;
+        this->set = set_ptr;
+        sort(this->set,this->size);
+        return *this;
+
+    }
 
 
 
@@ -67,7 +96,16 @@ public:
         make_set(temp,size,this->set,this->size);
         }
     }
+    //--------------------
+    operator int(){
+        if(size >0){
+        if(size % 2==1) {return (int )set[size/2];}
+        else{return (set[size/2]+set[size/2 -1])/2;}
+        }
+        else return 0;
+    }
 
+    //--------------------
     friend ostream &operator << (ostream &out, Set &obj){
         out << "{";
         if(obj.size >0){
@@ -88,16 +126,20 @@ public:
 };
 // ==================================== main
 int main(){
-    Set A;
-    Set B;
-    A.fill_set();
-    B.fill_set();
-    cout << A;
-    cout << B;
-    cout << endl;
+//    Set A;
+//    Set B;
+//    A.fill_set();
+//    B.fill_set();
+//    cout << A;
+//    cout << B;
+//    cout << endl;
     Set C;
-    C=B+A;
+    C.fill_set();
+    C+=C;
     cout << C;
+    cout << C;
+    int a=C;
+    cout << a;
     return 0;
 }
 // =================================== end of main
