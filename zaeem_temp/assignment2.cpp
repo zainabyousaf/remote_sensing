@@ -41,12 +41,11 @@ public:
 // ==================================== main
 int main(){
     Set A;
-    int x[3]={1,1,2};
-    Set B(x,3);
+    Set B;
+    A.fill_set();
+    B.fill_set();
+    cout << A;
     cout << B;
-    Set C;
-    cin >> C;
-    cout << C;
     return 0;
 }
 // =================================== end of main
