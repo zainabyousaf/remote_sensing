@@ -44,6 +44,15 @@ public:
             return *this;
         }
     }
+    //------------------
+    bool isElement(int key){
+        bool found=false;
+        for(int i=0; i< size; i++){
+            if(key == set[i]) found=true;
+        }
+        if(found) return true;
+        return false;
+    }
     //------------------ operator + for union
     const Set operator + (const Set &rhs){
         int *set_ptr; // its memory will be allocated in union function
@@ -71,18 +80,15 @@ public:
 
     }
     //------------------ s3 = s2 +4
-    Set &operator +(int val){
+    Set operator +(int val){
         int *set_ptr;
-        int set_size;
-        this->size = this->size+1;
-        set_ptr = new int [this->size];
+        unsigned int set_size = this->size+1;
+        set_ptr = new int [set_size];
         set_ptr[0]=val;
-        for(int i=0; i< this->size-1; i++) set_ptr[i+1] = this->set[i];
-
-        delete this->set;
-        this->set = set_ptr;
-        sort(this->set,this->size);
-        return *this;
+        for(int i=0; i< set_size-1; i++) set_ptr[i+1] = this->set[i];
+        sort(set_ptr,set_size);
+        Set temp(set_ptr,set_size);
+        return temp;
 
     }
     //------------------------ += operator
@@ -101,8 +107,6 @@ public:
 
     }
     //---------------------
-
-
     void fill_set(){
         delete []this->set; // delete previously set memory if any;
         cout << "enter size of set: ";
@@ -125,17 +129,17 @@ public:
         Set &operator ++(int){
             static Set temp(*this);
             // it will remain alive when cout will call
-        for(int i=0; i< this->size; i++){
+            for(int i=0; i< this->size; i++){
             //temp.set[i]=this->set[i]; // copy before updating
-            ++(this->set[i]);
+                ++(this->set[i]);
         }
         return temp;
     }
     //-------------------- pre decrement
         Set &operator --(){
-        for(int i=0; i< this->size; i++){
-            --(this->set[i]);
-        }
+            for(int i=0; i< this->size; i++){
+                --(this->set[i]);
+            }
         return *this;
     }
     //------------------- -- post decrement
@@ -146,7 +150,7 @@ public:
         }
         return temp;
     }
-    //--------------------
+    //-------------------- int iVal = A
     operator int(){
         if(size >0){
         if(size % 2==1) {return set[size/2];}
@@ -154,7 +158,7 @@ public:
         }
         else return 0;
     }
-    //--------------------
+    //-------------------- float ival = A
         operator float(){
         if(size >0){
         if(size % 2==1) {return (float)set[size/2];}
@@ -163,7 +167,7 @@ public:
         else return 0.0;
     }
 
-    //--------------------
+    //-------------------- cout << A
     friend ostream &operator << (ostream &out, Set &obj){
         out << "{";
         if(obj.size >0){
@@ -205,58 +209,121 @@ public:
         }
             return *this;
     }
-    //---------------------- ! empty test operator over loader
+    //---------------------- !A empty test operator over loader
     bool operator !(){
         if(this->size > 0) return false;
         else return true;
     }
-    //----------------------- ||
+    //----------------------- A||B
     bool operator ||(const Set &rhs){
         if(this->size > 0 || rhs.size >0) return true;
         else return false;
     }
-    //------------------
+    //------------------ A && B
     bool operator &&(const Set &rhs){
         if(this->size > 0 && rhs.size >0) return true;
         else return false;
+    }
+
+    //------------------- A==B
+    bool operator ==(const Set &rhs){
+        for(int i=0; i< this->size; i++){
+            if(this->set[i] != rhs.set[i]) return false;
+        }
+        return true;
+    }
+    //-------------------operator A -5
+    Set &operator -(int val){
+        if(isElement(val)){
+            unsigned int set_size=this->size-1;
+            int *set_ptr = new int [set_size];
+            int index=0;
+            for(int i=0; i< this->size; i++){
+                if(this->set[i] != val){
+                    set_ptr[index++]=this->set[i];
+                }
+            }
+        delete []this->set;
+        Set temp(set_ptr,set_size);
+        //cout << temp << "--------";
+        this->set = temp.set;
+        this->size = set_size;
+            }
+        return *this;
+
+    }
+    //----------------- A -= B
+    Set &operator -=(const Set &rhs){
+        if(this->size > 0){
+            int *temp_set = new int [this->size];
+            int temp_index=0;
+            bool found;
+            for(int i=0; i< this->size; i++){
+                found =false;
+                for(int j=0; j < rhs.size; j++){
+                    if(this->set[i]==rhs.set[j]) {found=true;break;}
+                }
+                if(!found){
+                    temp_set[temp_index++] = rhs.set[i];
+                }
+
+            }
+
+            delete []this->set;
+            this->set = new int [temp_index];
+            this->size = temp_index;
+            for(int i=0; i< this->size; i++) this->set[i]=temp_set[i];
+            delete []temp_set;
+        }
+            return *this;
     }
 
 };
 // ==================================== main
 int main(){
     //cout << "Set A\n";
-    Set A;
+    //Set A;
     const int size=3;
     int array[size] = {1,2,7};
     //cout << "Set B(array,size)\n";
     Set B(array,size);
     //cout << "cin >> A\n";
-    cin >> A;
+    Set C = (B-2);
+    cout << C;
+    cout << B;
+    B+=C;
+    cout << B;
+    B-=C;
+    cout << B;
     //cout << "cout << A << endl\n";
     //cout << "printing A";
-    cout << A << endl;
+    //cout << A << endl;
     //cout << "has printed A";
     //cout << "Set C(A)\n";
-    Set C(A);
+    //Set C(A);
 
     //cout << "cout << C << endl";
-    cout << C;
+    //cout << C;
 
-    Set D = A+B;
-    cout << "A-B";
-    Set E = A-B;
+    //Set D = A+B;
+    //cout << "A-B";
+    //Set E = A-B;
 
-    Set F = A++;
+    //Set F = A++;
 
-    Set G = --A;
+    //Set G = --A;
 
-    Set H = A+10;
-    cout << "cout << C";
-    Set I = --H++;
-    Set empt;
-    cout << !empt;
-    cout << (A || B);
-    cout << (A && B);
+    //Set H = A+10;
+    //cout << "cout << C";
+    //Set I = --H++;
+    //Set empt;
+    //cout << !empt;
+    //cout << (A || B);
+    //cout << (A && B);
+    //cout << "==";
+    //cout << (A==C);
+//    A = (A-5);
+//    cout << A;
     return 0;
 }
 // =================================== end of main
