@@ -1,8 +1,9 @@
 #include <iostream>
 using namespace std;
+
 void sort(int *&, int );
 // array, size
-void make_set(int [], int, int * &,int &);
+void make_set(int [], unsigned int, int * &,unsigned int &);
 // duplicates, size, set, set_size
 void fill_array(int *&,int );
 // array, size
@@ -14,12 +15,13 @@ void Union(int const * const, int const * const, const int, const int, int *&, i
 
 class Set{
 private:
-    int size,*set; // first small letter
+    unsigned int size;
+    int *set; // first small letter
 public:
     Set(){size=0;set = 0; // nullptr
     }
 
-    Set(int elements[], int size){
+    Set(int elements[], unsigned int size){
         make_set(elements,size,this->set,this->size);
         // size and set has been modified as passed by reference
     }
@@ -42,7 +44,7 @@ public:
             return *this;
         }
     }
-    //------------------
+    //------------------ operator + for union
     const Set operator + (const Set &rhs){
         int *set_ptr; // its memory will be allocated in union function
         int set_size;
@@ -72,6 +74,21 @@ public:
     Set &operator +(int val){
         int *set_ptr;
         int set_size;
+        this->size = this->size+1;
+        set_ptr = new int [this->size];
+        set_ptr[0]=val;
+        for(int i=0; i< this->size-1; i++) set_ptr[i+1] = this->set[i];
+
+        delete this->set;
+        this->set = set_ptr;
+        sort(this->set,this->size);
+        return *this;
+
+    }
+    //------------------------ += operator
+        Set &operator +=(int val){
+        int *set_ptr;
+        int set_size;
         this->size=this->size+1;
         set_ptr = new int [this->size];
         set_ptr[0]=val;
@@ -83,17 +100,18 @@ public:
         return *this;
 
     }
-
+    //---------------------
 
 
     void fill_set(){
         delete []this->set; // delete previously set memory if any;
         cout << "enter size of set: ";
-        cin >> this->size;
-        if(size >0){
-        int *temp = new int [this->size];
-        fill_array(temp,size);
-        make_set(temp,size,this->set,this->size);
+        unsigned int array_size;
+        cin >> array_size;
+        if(array_size > 0){
+        int *temp = new int [array_size];
+        fill_array(temp,array_size);
+        make_set(temp,array_size,this->set,this->size);
         }
     }
     //-------------------- pre inrement
@@ -105,12 +123,10 @@ public:
     }
     //-------------------- post increment
         Set &operator ++(int){
-            Set temp; // create temp obj
-            temp.set = new int [this->size];
-            temp.size = this->size;
-
+            static Set temp(*this);
+            // it will remain alive when cout will call
         for(int i=0; i< this->size; i++){
-            temp.set[i]=this->set[i]; // copy before updating
+            //temp.set[i]=this->set[i]; // copy before updating
             ++(this->set[i]);
         }
         return temp;
@@ -121,6 +137,14 @@ public:
             --(this->set[i]);
         }
         return *this;
+    }
+    //------------------- -- post decrement
+        Set &operator --(int){
+            static Set temp(*this); // create temp obj
+        for(int i=0; i< this->size; i++){
+            --(this->set[i]);
+        }
+        return temp;
     }
     //--------------------
     operator int(){
@@ -156,42 +180,89 @@ public:
         obj.fill_set();
         return in;
     }
+    //-------------------- s1 - s2
+    Set &operator -(const Set &rhs){
+        if(this->size > 0){
+            int *temp_set = new int [this->size];
+            int temp_index=0;
+            bool found;
+            for(int i=0; i< this->size; i++){
+                found =false;
+                for(int j=0; j < rhs.size; j++){
+                    if(this->set[i]==rhs.set[j]) {found=true;break;}
+                }
+                if(!found){
+                    temp_set[temp_index++] = rhs.set[i];
+                }
+
+            }
+
+            delete []this->set;
+            this->set = new int [temp_index];
+            this->size = temp_index;
+            for(int i=0; i< this->size; i++) this->set[i]=temp_set[i];
+            delete []temp_set;
+        }
+            return *this;
+    }
+    //---------------------- ! empty test operator over loader
+    bool operator !(){
+        if(this->size > 0) return false;
+        else return true;
+    }
+    //----------------------- ||
+    bool operator ||(const Set &rhs){
+        if(this->size > 0 || rhs.size >0) return true;
+        else return false;
+    }
+    //------------------
+    bool operator &&(const Set &rhs){
+        if(this->size > 0 && rhs.size >0) return true;
+        else return false;
+    }
 
 };
 // ==================================== main
 int main(){
-//    Set A;
-//    Set B;(float)
-//    A.fill_set();
-//    B.fill_set();
-//    cout << A;
-//    cout << B;
-//    cout << endl;
-    Set C;
-    C.fill_set();
-    C+=C;
+    //cout << "Set A\n";
+    Set A;
+    const int size=3;
+    int array[size] = {1,2,7};
+    //cout << "Set B(array,size)\n";
+    Set B(array,size);
+    //cout << "cin >> A\n";
+    cin >> A;
+    //cout << "cout << A << endl\n";
+    //cout << "printing A";
+    cout << A << endl;
+    //cout << "has printed A";
+    //cout << "Set C(A)\n";
+    Set C(A);
+
+    //cout << "cout << C << endl";
     cout << C;
-    ++C;
-    cout << C;
-    C++;
-    cout << C;
-    Set D = ++C;
-    cout << D;
-    Set E = C++;
-    cout << E;
-    cout << C;
-    --C;
-    cout << --C;
-//    int a=C;
-//    cout << a;
-//    float b= C;
-//    cout << b;
+
+    Set D = A+B;
+    cout << "A-B";
+    Set E = A-B;
+
+    Set F = A++;
+
+    Set G = --A;
+
+    Set H = A+10;
+    cout << "cout << C";
+    Set I = --H++;
+    Set empt;
+    cout << !empt;
+    cout << (A || B);
+    cout << (A && B);
     return 0;
 }
 // =================================== end of main
 
 //------------------ make_set function definition
-void make_set(int elements[], int size, int * &unique_elements,int &new_size){
+void make_set(int elements[], unsigned int size, int * &unique_elements,unsigned int &new_size){
     int *temp =new int [size];
     int index = 0;
     bool found;
