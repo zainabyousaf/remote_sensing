@@ -99,10 +99,18 @@ public:
     //--------------------
     operator int(){
         if(size >0){
-        if(size % 2==1) {return (int )set[size/2];}
+        if(size % 2==1) {return set[size/2];}
         else{return (set[size/2]+set[size/2 -1])/2;}
         }
         else return 0;
+    }
+    //--------------------
+        operator float(){
+        if(size >0){
+        if(size % 2==1) {return (float)set[size/2];}
+        else{return (float)(set[size/2]+set[size/2 -1])/2.0;}
+        }
+        else return 0.0;
     }
 
     //--------------------
@@ -140,6 +148,8 @@ int main(){
     cout << C;
     int a=C;
     cout << a;
+    float b= C;
+    cout << b;
     return 0;
 }
 // =================================== end of main
