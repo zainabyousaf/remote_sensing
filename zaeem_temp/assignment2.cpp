@@ -96,6 +96,32 @@ public:
         make_set(temp,size,this->set,this->size);
         }
     }
+    //-------------------- pre inrement
+    Set &operator ++(){
+        for(int i=0; i< this->size; i++){
+            ++(this->set[i]);
+        }
+        return *this;
+    }
+    //-------------------- post increment
+        Set &operator ++(int){
+            Set temp; // create temp obj
+            temp.set = new int [this->size];
+            temp.size = this->size;
+
+        for(int i=0; i< this->size; i++){
+            temp.set[i]=this->set[i]; // copy before updating
+            ++(this->set[i]);
+        }
+        return temp;
+    }
+    //-------------------- pre decrement
+        Set &operator --(){
+        for(int i=0; i< this->size; i++){
+            --(this->set[i]);
+        }
+        return *this;
+    }
     //--------------------
     operator int(){
         if(size >0){
@@ -135,7 +161,7 @@ public:
 // ==================================== main
 int main(){
 //    Set A;
-//    Set B;
+//    Set B;(float)
 //    A.fill_set();
 //    B.fill_set();
 //    cout << A;
@@ -145,11 +171,21 @@ int main(){
     C.fill_set();
     C+=C;
     cout << C;
+    ++C;
     cout << C;
-    int a=C;
-    cout << a;
-    float b= C;
-    cout << b;
+    C++;
+    cout << C;
+    Set D = ++C;
+    cout << D;
+    Set E = C++;
+    cout << E;
+    cout << C;
+    --C;
+    cout << --C;
+//    int a=C;
+//    cout << a;
+//    float b= C;
+//    cout << b;
     return 0;
 }
 // =================================== end of main
