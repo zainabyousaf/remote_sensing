@@ -1,0 +1,237 @@
+
+#include <iostream>
+using namespace std;
+
+class Student{
+private:
+
+    char name[50];
+    char rollNo[8];
+    float cgpa;
+public:
+Student(const char myroll[], const char *myname, float cgp){
+    cgpa = cgp;
+    for(int i=0; i< 7; i++) rollNo[i]=myroll[i];
+    rollNo[7]='\0';
+int ind=0;
+  while(myname[ind] != '\0'){
+        name[ind]=myname[ind];
+        ind++;
+  }
+name[ind]='\0';
+
+}
+void print(){
+  cout << "rollNo:\t" << rollNo << " Name:\t" << name << " cgpa:\t" << cgpa << endl;
+
+}
+float GetCGPA(){
+  return cgpa;
+}
+
+char * GetName(){
+  return name;
+}
+
+};
+
+class Society{
+    private:
+    char name[50];
+    Student* president;
+    Student *members[5];
+    int noOfStudents;
+public:
+Society(char *myname){
+  int ind=0;
+  noOfStudents =0;
+  while(myname[ind] != '\0') ind++;
+  for(int i=0; i< ind; i++) name[i] = myname[i];
+  name[ind]='\0';
+
+  president=0;
+  for(int i=0; i< 5; i++) members[i]=0;
+
+}
+void PrintInfo(){
+  cout << "Society Name: " << name << endl;
+  cout << "President: ";
+
+  if(president == 0)
+    { cout << " Not Available.\n";}
+
+    else{cout << ((*president).GetName()) << endl;}
+
+  for(int i=1; i<= 5; i++){
+    cout << "Member " << i <<": ";
+    if(i < noOfStudents){
+      cout << (*members[i-1]).GetName() << endl;
+    }
+    else{
+      cout << "Not available." << endl;
+    }
+  }
+}
+
+void AppointPresident(Student &stu){
+     if(president !=0 && stu.GetCGPA() >3){
+    cout << stu.GetName() << "Can not be appointed as president.";
+    cout << " President is not vacant" << endl;
+  }
+  else if(stu.GetCGPA() > 3.0  && president==0){
+    president = &stu;
+  }
+
+  else{
+    cout << stu.GetName() << "Cannot be appointed as president.";
+    cout <<" GPA criteria is not met\n" << endl;
+
+  }
+}
+
+void AddMember(Student &stu){
+  if(president==&stu){
+    cout << stu.GetName() << " Cannot be added. He is also president " << endl;
+  }
+  else{
+    bool found =false;
+    for(int i=0; i< 5; i++){
+      if(&stu==members[i]) {found=true;break;}
+    }
+    if(found == true){
+      cout << stu.GetName() << " cannot be added as he is already member." << endl;;
+    }
+    else if( noOfStudents >=5 || noOfStudents <0 ){
+      cout << stu.GetName() << " cannot be added because there is not vacant seat." << endl;
+    }
+    else{
+      members[noOfStudents++] = &stu;
+    }
+  }
+}
+~Society(){
+    // no need to do anything here
+}
+
+};
+
+class Point{
+    private:
+    int x,y;
+    public:
+Point(int _x,int _y){
+  x=_x;
+  y=_y;
+
+}
+void print(){
+  cout << "(";
+  cout << x << ",";
+  cout << y << ")";
+}
+
+~Point(){
+  cout << "~Point() called\n";
+}
+};
+
+class Circle{
+    private:
+    float radius;
+    Point center;
+public:
+Circle(int _x, int _y, float _r): center(_x,_y) {
+  radius = _r;
+}
+
+void Print(){
+  center.print();
+  cout  << " and radius: " << radius << endl;
+}
+
+~Circle(){
+
+}
+};
+
+
+class CompactDisc{
+    private:
+    char title[20];
+    int capacity;
+
+
+public:
+CompactDisc(const char *mytitle,int c){
+  capacity = c;
+  int ind=0;
+  while(mytitle[ind] != '\0'){
+  title[ind]=mytitle[ind];
+    ind++;
+  }
+  title[ind]='\0';
+
+
+}
+
+char* GetTitle(){
+  return (*this).title;
+}
+
+void SetTitle(const char *mytitle){
+int ind=0;
+  while(mytitle[ind] != '\0'){
+  title[ind]=mytitle[ind];
+    ind++;
+  }
+  title[ind]='\0';
+}
+
+int GetCapacity(){
+  return capacity;
+}
+
+void set_capacity(int c){
+  capacity = c;
+}
+
+~CompactDisc(){
+
+}
+};
+
+class CDDrive{
+private:
+    CompactDisc *aCompactDisc;
+    char manufacturer[20];
+    int speed;
+
+public:
+CDDrive(const char *manuf, int s){
+  aCompactDisc = 0;
+  speed = s;
+  int index=0;
+  while(manuf[index]) manufacturer[index] = manuf[index++];
+  manufacturer[index]='\0';
+  cout << "CDDrive() called\n";
+}
+
+void Play (){
+  if(aCompactDisc != 0){
+    cout << "title: ";
+    cout << (*aCompactDisc).GetTitle() << endl;
+    cout << "Capacity: ";
+    cout << (*aCompactDisc).GetCapacity() << endl;
+  }
+  cout << "please, Insert Disk." << endl;
+
+}
+void InsertCD(CompactDisc *cd){
+  aCompactDisc = cd;
+}
+
+CompactDisc* EjectCD(){
+  return aCompactDisc;
+}
+};
+
